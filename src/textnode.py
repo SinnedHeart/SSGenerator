@@ -1,4 +1,4 @@
-from leafnode import LeafNode
+from htmlnode import HTMLNode
 from enum import Enum
 
 class TextType(Enum):
@@ -26,19 +26,19 @@ class TextNode:
     
 def text_node_to_html_node(text_node):
     if text_node.text_type == TextType.TEXT:
-            return LeafNode(None, text_node.text)
+            return HTMLNode(None, text_node.text)
     if text_node.text_type == TextType.BOLD:
-            return LeafNode("b", text_node.text)
+            return HTMLNode("b", text_node.text)
     if text_node.text_type == TextType.ITALIC:
-            return LeafNode("i", text_node.text)
+            return HTMLNode("i", text_node.text)
     if text_node.text_type == TextType.CODE:
-            return LeafNode("code", text_node.text)
+            return HTMLNode("code", text_node.text)
     if text_node.text_type == TextType.LINK:
-            if not text_node.url:
-                raise ValueError("Link text nodes must have a URL")
-            return LeafNode("a", text_node.text, {"href": text_node.url})   
+        if not text_node.url:
+            raise ValueError("Link text nodes must have a URL") 
+        return HTMLNode("a", text_node.text, props={"href": text_node.url})  
     if text_node.text_type == TextType.IMAGE:
-            if text_node.url is None:
-                raise ValueError("Link text nodes must have a URL")
-            return LeafNode("img", "", {"src": text_node.url, "alt": text_node.text})
-    raise ValueError(f"Unkown text type: {text_node.text_type}")
+        if text_node.url is None:
+            raise ValueError("Link text nodes must have a URL")
+        return HTMLNode("img", "", props={"src": text_node.url, "alt": text_node.text})
+    raise ValueError(f"Unknown text type: {text_node.text_type}")
